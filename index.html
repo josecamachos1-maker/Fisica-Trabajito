@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b1220">
+    <title>Física en movimiento | Simulador de ascensor</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="physics.js" defer></script>
+    <script src="simulation.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#inicio" aria-label="Física en movimiento, inicio">
+          <span class="brand-mark">F</span>
+          <span>FÍSICA <b>EN MOVIMIENTO</b></span>
+        </a>
+        <span class="lab-tag">
+          <span></span>
+          LAB 13 · APLICACIÓN A LA CARRERA
+        </span>
+      </header>
+
+      <section class="intro" id="inicio">
+        <div>
+          <p class="eyebrow">DINÁMICA · SEGUNDA LEY DE NEWTON</p>
+          <h1>¿Cuánto pesas<br><span>en un ascensor?</span></h1>
+          <p class="intro-copy">
+            Observa cómo la aceleración cambia la fuerza que ejerce el suelo sobre una persona.
+          </p>
+        </div>
+        <div class="gravity-chip">
+          <span class="gravity-icon">↓</span>
+          <span>
+            <small>GRAVEDAD</small>
+            <strong>9,81 <em>m/s²</em></strong>
+          </span>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Simulador de ascensor">
+        <div class="scene-card">
+          <div class="scene-head">
+            <div>
+              <p class="section-kicker">VISTA EN TIEMPO REAL</p>
+              <h2>El recorrido</h2>
+            </div>
+            <div class="phase-pill" id="phase-pill">
+              <span class="phase-dot"></span>
+              <span id="phase-label">En reposo</span>
+            </div>
+          </div>
+
+          <div class="elevator-scene" id="elevator-scene">
+            <div class="floor-label top-floor">PISO <b>05</b></div>
+            <div class="floor-label bottom-floor">PISO <b>01</b></div>
+            <div class="shaft">
+              <div class="shaft-line"></div>
+              <div class="floor-lines">
+                <i></i><i></i><i></i><i></i>
+              </div>
+              <div
+                class="elevator"
+                id="elevator"
+                aria-label="Ascensor con una persona sobre una balanza"
+              >
+                <div class="car-top"></div>
+                <div class="cabin">
+                  <div class="cabin-light"></div>
+                  <div class="person">
+                    <div class="person-head"></div>
+                    <div class="person-body"></div>
+                    <div class="person-arm arm-left"></div>
+                    <div class="person-arm arm-right"></div>
+                    <div class="person-leg leg-left"></div>
+                    <div class="person-leg leg-right"></div>
+                  </div>
+                  <div class="scale">
+                    <span class="scale-screen" id="scale-screen">588,6</span>
+                    <span class="scale-label">N</span>
+                  </div>
+                </div>
+                <div class="car-base"></div>
+              </div>
+            </div>
+            <div class="motion-indicator" id="motion-indicator">
+              <span class="motion-arrow">↑</span>
+              <span id="motion-text">Ascensor detenido</span>
+            </div>
+          </div>
+
+          <div class="scene-foot">
+            <span><i class="legend-dot"></i>Persona + balanza</span>
+            <span class="position-readout">
+              POSICIÓN <b id="position-value">PISO 03</b>
+            </span>
+          </div>
+        </div>
+
+        <aside class="control-card">
+          <div class="card-title">
+            <div>
+              <p class="section-kicker">PANEL DE CONTROL</p>
+              <h2>Tu experimento</h2>
+            </div>
+            <span class="settings-icon">⚙</span>
+          </div>
+
+          <label class="input-label" for="mass-input">
+            Masa de la persona <span>m</span>
+          </label>
+          <div class="input-wrap">
+            <input id="mass-input" type="number" min="30" max="150" step="1" value="60">
+            <span>kg</span>
+          </div>
+          <input
+            id="mass-range"
+            class="range"
+            type="range"
+            min="30"
+            max="150"
+            step="1"
+            value="60"
+            aria-label="Ajustar masa"
+          >
+          <div class="range-ends"><span>30 kg</span><span>150 kg</span></div>
+
+          <label class="input-label acceleration-label" for="acceleration-input">
+            Magnitud de aceleración <span>|a|</span>
+          </label>
+          <div class="input-wrap">
+            <input
+              id="acceleration-input"
+              type="number"
+              min="0.1"
+              max="9.8"
+              step="0.1"
+              value="2.0"
+            >
+            <span>m/s²</span>
+          </div>
+          <input
+            id="acceleration-range"
+            class="range"
+            type="range"
+            min="0.1"
+            max="9.8"
+            step="0.1"
+            value="2"
+            aria-label="Ajustar aceleración"
+          >
+          <div class="range-ends">
+            <span>0,1 m/s²</span><span>9,8 m/s²</span>
+          </div>
+
+          <div class="divider"></div>
+          <p class="input-label direction-title">Dirección del recorrido</p>
+          <div class="direction-buttons">
+            <button
+              class="direction-button active"
+              id="up-button"
+              type="button"
+              aria-pressed="true"
+            >
+              <span>↑</span> Subir
+            </button>
+            <button class="direction-button" id="down-button" type="button" aria-pressed="false">
+              <span>↓</span> Bajar
+            </button>
+          </div>
+          <div class="transport-buttons">
+            <button class="stop-button" id="stop-button" type="button">
+              <span>Ⅱ</span> Detener
+            </button>
+            <button class="reset-button" id="reset-button" type="button">
+              <span>↺</span> Reiniciar
+            </button>
+          </div>
+          <button
+            class="slow-mode-button"
+            id="slow-mode-button"
+            type="button"
+            aria-pressed="false"
+          >
+            <span><b>◷</b> Modo lento ×0,25</span>
+            <span class="slow-mode-state" id="slow-mode-state">Desactivado</span>
+          </button>
+          <p class="control-hint">
+            <span>ⓘ</span> Detener aplica un frenado gradual antes de parar.
+          </p>
+        </aside>
+      </section>
+
+      <section class="readings" aria-label="Mediciones">
+        <div class="readings-heading">
+          <p class="section-kicker">INSTANTÁNEA DEL MOVIMIENTO</p>
+          <span>ACTUALIZACIÓN EN VIVO <i></i></span>
+        </div>
+        <div class="reading-grid">
+          <article class="reading-card">
+            <div class="reading-top">
+              <span class="reading-icon speed-icon">↕</span>
+              <span class="reading-name">VELOCIDAD</span>
+            </div>
+            <div class="reading-value" id="velocity-value">0,00 <small>m/s</small></div>
+            <p class="reading-note" id="velocity-note">Sin movimiento</p>
+          </article>
+          <article class="reading-card">
+            <div class="reading-top">
+              <span class="reading-icon acceleration-icon">↗</span>
+              <span class="reading-name">ACELERACIÓN</span>
+            </div>
+            <div class="reading-value" id="acceleration-value">0,00 <small>m/s²</small></div>
+            <p class="reading-note" id="acceleration-note">Hacia arriba es positivo</p>
+          </article>
+          <article class="reading-card force-card">
+            <div class="reading-top">
+              <span class="reading-icon force-icon">N</span>
+              <span class="reading-name">LECTURA DE LA BALANZA</span>
+            </div>
+            <div class="reading-value" id="normal-value">588,6 <small>N</small></div>
+            <div class="force-details">
+              <p>Referencia en reposo <b id="reference-value">588,6 N</b></p>
+              <p>Diferencia <b id="difference-value">+0,0 N</b></p>
+              <p class="reading-note" id="comparison-label">Igual que en reposo</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <footer class="explanation">
+        <div class="explanation-icon">✳</div>
+        <div>
+          <p class="section-kicker">¿POR QUÉ CAMBIA LA LECTURA?</p>
+          <p>
+            La balanza mide la fuerza normal <b>N = m × (g + a)</b>. Al acelerar hacia arriba,
+            empuja más; al frenar mientras sube, empuja menos. A velocidad constante o en
+            reposo, marca el peso habitual <b>m × g</b>.
+          </p>
+        </div>
+        <span class="formula-badge">ΣF = m · a</span>
+      </footer>
+      <div class="page-foot">
+        <span>LABORATORIO DE FÍSICA · MECÁNICA</span>
+        <span>TOMA HACIA ARRIBA COMO SENTIDO POSITIVO <b>↑</b></span>
+      </div>
+    </main>
+  </body>
+</html>
